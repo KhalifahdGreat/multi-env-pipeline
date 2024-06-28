@@ -8,18 +8,20 @@ phases:
   pre_build:
     commands:
       - echo "Setting up environment variables"
-      - echo "CODEBUILD_SOURCE_VERSION is ${CODEBUILD_SOURCE_VERSION}"
-      - |
-        BRANCH_NAME=${CODEBUILD_SOURCE_VERSION#refs/heads/}
-        echo "Branch name: $BRANCH_NAME"
-        if [ "$BRANCH_NAME" == "dev" ]; then
-          export ENVIRONMENT="development"
-        elif [ "$BRANCH_NAME" == "prod" ]; then
-          export ENVIRONMENT="production"
+      - if [ -n "$CODEBUILD_WEBHOOK_HEAD_REF" ]; then
+        BRANCH_NAME=${CODEBUILD_WEBHOOK_HEAD_REF#refs/heads/};
         else
-          export ENVIRONMENT="unknown"
+        BRANCH_NAME=${CODEBUILD_SOURCE_VERSION#refs/heads/};
         fi
-        echo "Environment: $ENVIRONMENT"
+      - echo "Branch name: $BRANCH_NAME"
+      - if [ "$BRANCH_NAME" == "main" ]; then
+        export ENVIRONMENT="production";
+        elif [ "$BRANCH_NAME" == "dev" ]; then
+        export ENVIRONMENT="development";
+        else
+        export ENVIRONMENT="unknown";
+        fi
+      - echo "Environment: $ENVIRONMENT"
 
   build:
     commands:
