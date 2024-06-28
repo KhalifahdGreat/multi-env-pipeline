@@ -7,12 +7,15 @@ phases:
   pre_build:
     commands:
       - echo "Setting up environment variables"
+      - echo "Current branch: $CODEBUILD_SOURCE_VERSION"
       - if [ "$CODEBUILD_SOURCE_VERSION" == "refs/heads/dev" ]; then export ENVIRONMENT="development"; fi
       - if [ "$CODEBUILD_SOURCE_VERSION" == "refs/heads/prod" ]; then export ENVIRONMENT="production"; fi
       - echo "Environment: $ENVIRONMENT"
   build:
     commands:
+      - echo "Running build phase"
       - ./print_env.sh
-  post_build:
-    commands:
-      - ./deploy.sh
+
+artifacts:
+  files:
+    - print_env.sh
