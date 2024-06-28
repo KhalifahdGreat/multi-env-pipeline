@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - echo "Setting up environment variables"
-      - echo "CODEBUILD_SOURCE_VERSION: $CODEBUILD_SOURCE_VERSION"
+      - echo "CODEBUILD_SOURCE_VERSION ${CODEBUILD_SOURCE_VERSION}"
       - BRANCH_NAME=$(echo $CODEBUILD_SOURCE_VERSION | sed 's|refs/heads/||')
       - echo "Branch name: $BRANCH_NAME"
       - if [ "$BRANCH_NAME" == "dev" ]; then export ENVIRONMENT="development"; fi
