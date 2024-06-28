@@ -4,11 +4,27 @@ phases:
   install:
     runtime-versions:
       nodejs: 14
+
   pre_build:
     commands:
       - echo "Setting up environment variables"
-      - echo "CODEBUILD_SOURCE_VERSION ${CODEBUILD_SOURCE_VERSION}"
-      - echo "Environment: $ENVIRONMENT"
+      - echo "CODEBUILD_SOURCE_VERSION is ${CODEBUILD_SOURCE_VERSION}"
+      - |
+        BRANCH_NAME=${CODEBUILD_SOURCE_VERSION#refs/heads/}
+        echo "Branch name: $BRANCH_NAME"
+        if [ "$BRANCH_NAME" == "dev" ]; then
+          export ENVIRONMENT="development"
+        elif [ "$BRANCH_NAME" == "prod" ]; then
+          export ENVIRONMENT="production"
+        else
+          export ENVIRONMENT="unknown"
+        fi
+        echo "Environment: $ENVIRONMENT"
+
   build:
     commands:
       - ./print_env.sh
+
+artifacts:
+  files:
+    - print_env.sh
