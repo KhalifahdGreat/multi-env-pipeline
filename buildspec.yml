@@ -17,9 +17,9 @@ phases:
         fi
         echo "Branch name: $BRANCH_NAME"
         if [ "$BRANCH_NAME" == "dev" ]; then
-          export ENVIRONMENT="development"
+          export ENVIRONMENT=${ENVIRONMENT_DEV}
         elif [ "$BRANCH_NAME" == "main" ]; then
-          export ENVIRONMENT="production"
+          export ENVIRONMENT=${ENVIRONMENT_PROD}
         else
           export ENVIRONMENT="unknown"
         fi
@@ -27,6 +27,7 @@ phases:
 
   build:
     commands:
+      - echo "Running build for environment: $ENVIRONMENT"
       - ./print_env.sh
 
 artifacts:
