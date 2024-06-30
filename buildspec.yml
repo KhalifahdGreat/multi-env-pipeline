@@ -8,12 +8,12 @@ phases:
   pre_build:
     commands:
       - echo "Setting up environment variables"
+      - cat buildspec.yml
       - echo "ENVIRONMENT_DEV is ${ENVIRONMENT_DEV}"
       - echo "ENVIRONMENT_PROD is ${ENVIRONMENT_PROD}"
 
   build:
     commands:
-      - echo `Using environment: ${ENVIRONMENT_DEV}` # or ${ENVIRONMENT_PROD} depending on your requirement
       - ./print_env.sh
 
 artifacts:
