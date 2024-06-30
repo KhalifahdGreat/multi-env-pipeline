@@ -1,3 +1,4 @@
 #!/bin/bash
 
-echo "Environment: ${ENVIRONMENT}"
+echo "Current environment is: ${ENVIRONMENT_DEV}"  # or ${ENVIRONMENT_PROD} depending on your requirement
+
